@@ -72,7 +72,8 @@ public class Paranamer {
     }
 
     public void write(String outputPath, String parameterText) throws IOException {
-        FileWriter fileWriter = new FileWriter(outputPath + File.separator + "ParameterNames.txt");
+        new File(outputPath + File.separator + "META-INF" + File.separator).mkdirs();
+        FileWriter fileWriter = new FileWriter(outputPath + File.separator + "META-INF" + File.separator + "ParameterNames.txt");
         PrintWriter pw = new PrintWriter(fileWriter);
         pw.println(parameterText);
         pw.close();
@@ -100,7 +101,7 @@ public class Paranamer {
      * @previousParamNames classLoader,c,m,p
      */
     public Method lookup(ClassLoader classLoader, String className, String methName, String paramNames) {
-        InputStream resourceAsStream = classLoader.getResourceAsStream("ParameterNames.txt");
+        InputStream resourceAsStream = classLoader.getResourceAsStream("META-INF/ParameterNames.txt");
         if (resourceAsStream == null) {
             return null;
         }
