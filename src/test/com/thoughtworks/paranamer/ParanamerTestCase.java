@@ -73,7 +73,7 @@ public class ParanamerTestCase extends TestCase {
     }
 
     public void testMethodRetrievalFailureIfNoParametersTextFile() throws IOException {
-        new File("/Users/paul/scm/oss/Paranamer/classes/ParameterList.txt").delete();
+        new File("/Users/paul/scm/oss/Paranamer/classes/ParameterNames.txt").delete();
         Object method = new Paranamer().lookup(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.Paranamer", "generate", "hello,goodbye");
         assertNull(method);
     }
