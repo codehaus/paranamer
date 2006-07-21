@@ -15,14 +15,14 @@ public class ParanamerExampleTestCase extends TestCase {
     protected void setUp() throws Exception {
         Paranamer paranamer = new Paranamer();
         String parameterSignatures = paranamer.generate(new File(".").getAbsolutePath() + "/src/java");
-        paranamer.write(new File(".").getAbsolutePath() + "/classes/", parameterSignatures);
+        paranamer.write(new File(".").getAbsolutePath() + "/target/classes/", parameterSignatures);
     }
 
 
     // An example of a test that looks something up by it's parameter names
 
     public void testMethodCanBeRetrievedByParameterNames() throws IOException, NoSuchMethodException {
-        Method method = new Paranamer().lookup(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.Paranamer", "lookup", "classLoader,className,methName,paramNames");
+        Method method = new Paranamer().lookup(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.Paranamer", "lookup", "classLoader,className,methodName,paramNames");
         assertEquals(Paranamer.class.getMethod("lookup", new Class[]{ClassLoader.class, String.class, String.class, String.class}), method);
     }
 
@@ -40,8 +40,20 @@ public class ParanamerExampleTestCase extends TestCase {
     // don't forget, you can copy the lookup() code into your project as it's public domain, if you want to use
     // the Paranamer technology without an extra jar.
 
-    // You also have checkedLookup() and uncheckedLookup() for variants of lookup that throw, rather than
-    // return null
+
+    // An example of a test that looks something up by it's parameter names
+
+    public void testMethodCanBeRetrievedByParameterNamesViaCheckedLookup() throws IOException, NoSuchMethodException, ParanamerException {
+        Method method = new Paranamer().checkedLookup(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.Paranamer", "lookup", "classLoader,className,methodName,paramNames");
+        assertEquals(Paranamer.class.getMethod("lookup", new Class[]{ClassLoader.class, String.class, String.class, String.class}), method);
+    }
+
+    // An example of a test that looks something up by it's parameter names
+
+    public void testMethodCanBeRetrievedByParameterNamesViaUncheckedLookup() throws IOException, NoSuchMethodException {
+        Method method = new Paranamer().uncheckedLookup(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.Paranamer", "lookup", "classLoader,className,methodName,paramNames");
+        assertEquals(Paranamer.class.getMethod("lookup", new Class[]{ClassLoader.class, String.class, String.class, String.class}), method);
+    }
 
 
 }

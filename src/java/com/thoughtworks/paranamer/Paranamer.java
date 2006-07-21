@@ -80,27 +80,27 @@ public class Paranamer {
     }
 
 
-    public Method checkedLookup(ClassLoader classLoader, String className, String methName, String paramNames) throws ParanamerException {
-        Method method = lookup(classLoader, className , methName, paramNames);
+    public Method checkedLookup(ClassLoader classLoader, String className, String methodName, String paramNames) throws ParanamerException {
+        Method method = lookup(classLoader, className , methodName, paramNames);
         if (method == null) {
             throw new ParanamerException("Paranamer could not find method signature");
         }
-        return null;
+        return method;
     }
 
-    public Method uncheckedLookup(ClassLoader classLoader, String className, String methName, String paramNames) {
-        Method method = lookup(classLoader, className , methName, paramNames);
+    public Method uncheckedLookup(ClassLoader classLoader, String className, String methodName, String paramNames) {
+        Method method = lookup(classLoader, className , methodName, paramNames);
         if (method == null) {
             throw new ParanamerRuntimeException("Paranamer could not find method signature");
         }
-        return null;
+        return method;
     }
 
     /**
      *
      * @previousParamNames classLoader,c,m,p
      */
-    public Method lookup(ClassLoader classLoader, String className, String methName, String paramNames) {
+    public Method lookup(ClassLoader classLoader, String className, String methodName, String paramNames) {
         InputStream resourceAsStream = classLoader.getResourceAsStream("META-INF/ParameterNames.txt");
         if (resourceAsStream == null) {
             return null;
@@ -108,20 +108,20 @@ public class Paranamer {
         InputStreamReader inputStreamReader = new InputStreamReader(resourceAsStream);
         LineNumberReader lineReader = new LineNumberReader(inputStreamReader);
         String line = readLine(lineReader);
-        String classAndMethodAndParamNames = className + " " + methName + " " + paramNames;
+        String classAndMethodAndParamNames = className + " " + methodName + " " + paramNames;
+        Class loadedClazz = null;
+        try {
+            loadedClazz = classLoader.loadClass(className);
+        } catch (ClassNotFoundException e) {
+            return null; // or could throw a/the exception
+        }
         while (line != null) {
             if (line.startsWith(classAndMethodAndParamNames)) {
                 StringTokenizer st = new StringTokenizer(line);
-                String clazzName = st.nextToken();
-                String methodName = st.nextToken();
+                st.nextToken(); // className
+                st.nextToken(); // methodName
                 st.nextToken(); // parameter names - not needed again
                 String methodParamTypes = st.nextToken();
-                Class loadedClazz = null;
-                try {
-                    loadedClazz = classLoader.loadClass(clazzName);
-                } catch (ClassNotFoundException e) {
-                    return null; // or could throw a/the exception
-                }
                 Method methods[] = loadedClazz.getMethods();
                 for (int i = 0; i < methods.length; i++) {
                     Method method = methods[i];
