@@ -38,8 +38,10 @@ public class ParanamerTestCase extends TestCase {
     }
 
     public void testWritingOfParamNameDataWorks() throws IOException {
-        new Paranamer().write(new File(".").getAbsolutePath() + "/classes/", allParameters);
-        String file = new File(".").getAbsolutePath() + "/classes/ParameterList.txt";
+        File dir = new File("target/classes/");
+        dir.mkdirs();
+        new Paranamer().write(dir.getAbsolutePath(), allParameters);
+        String file = new File("target/classes/META-INF/ParameterNames.txt").getAbsolutePath() + "";
         assertTrue(new File(file).exists());
         assertEquals("com.thoughtworks.paranamer.Paranamer generate sourcePath java.lang.String", new LineNumberReader(new FileReader(file)).readLine());
     }

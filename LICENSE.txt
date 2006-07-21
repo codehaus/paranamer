@@ -1,0 +1,10 @@
+Copyright (c) 2006 Paul Hammant & ThoughtWorks, Inc
+All rights reserved.
+
+You may consider all of ParaNamer as public domain.
+
+Feel free to
+* contribute code back to the project.
+* fork all or portions of the project, and give it a license* of your choosing.
+* link to it (import) for the purposes of an 'extend' or 'use' from a project of any license*
+* credit the ParaNamer project (or not if you prefer) when you use it.
