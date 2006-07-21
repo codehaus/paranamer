@@ -5,8 +5,6 @@ import org.apache.tools.ant.BuildException;
 
 import java.io.IOException;
 
-import com.thoughtworks.paranamer.Paranamer;
-
 public class ParanamerTask extends Task {
 
     private String sourcePath;
