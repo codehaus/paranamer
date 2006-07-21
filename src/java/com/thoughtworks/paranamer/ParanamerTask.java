@@ -11,7 +11,7 @@ public class ParanamerTask extends Task {
     private String outputPath;
 
     public void execute() throws BuildException {
-        Paranamer paranamer = new Paranamer();
+        ParanamerGeneration paranamer = new ParanamerGeneration();
         String parameterText = paranamer.generate(sourcePath);
         try {
             paranamer.write(outputPath, parameterText);
