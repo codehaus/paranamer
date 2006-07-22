@@ -1,13 +1,15 @@
 package com.thoughtworks.paranamer;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
 import java.lang.reflect.Method;
-import java.util.StringTokenizer;
 
 public class Paranamer {
 
     public Method checkedLookup(ClassLoader classLoader, String className, String methodName, String paramNames) throws ParanamerException {
-        Method method = lookup(classLoader, className , methodName, paramNames);
+        Method method = lookup(classLoader, className, methodName, paramNames);
         if (method == null) {
             throw new ParanamerException("Paranamer could not find method signature");
         }
@@ -15,7 +17,7 @@ public class Paranamer {
     }
 
     public Method uncheckedLookup(ClassLoader classLoader, String className, String methodName, String paramNames) {
-        Method method = lookup(classLoader, className , methodName, paramNames);
+        Method method = lookup(classLoader, className, methodName, paramNames);
         if (method == null) {
             throw new ParanamerRuntimeException("Paranamer could not find method signature");
         }
@@ -29,46 +31,54 @@ public class Paranamer {
      * @previousParamNames classLoader,c,m,p
      */
     public Method lookup(ClassLoader classLoader, String className, String methodName, String paramNames) {
-        InputStream resourceAsStream = classLoader.getResourceAsStream("META-INF/ParameterNames.txt");
-        try {
-            if (resourceAsStream == null) {
-                return null;
-            }
-            InputStreamReader inputStreamReader = new InputStreamReader(resourceAsStream);
-            LineNumberReader lineReader = new LineNumberReader(inputStreamReader);
-            String line = readLine(lineReader);
-            String classAndMethodAndParamNames = className + " " + methodName + " " + paramNames;
-            Class loadedClazz = null;
+        String mappings = getMappingsFromResource(classLoader.getResourceAsStream("META-INF/ParameterNames.txt"));
+        String classAndMethodAndParamNames = className + " " + methodName + " " + paramNames;
+        int ix = mappings.indexOf(classAndMethodAndParamNames);
+        if (ix != -1) {
+            int start = ix + classAndMethodAndParamNames.length();
+            int end = mappings.indexOf("\n", start + 1);
+            String methodParamTypes = mappings.substring(start, end).trim();
+            Class loadedClazz;
             try {
                 loadedClazz = classLoader.loadClass(className);
             } catch (ClassNotFoundException e) {
                 return null; // or could throw a/the exception
             }
-            while (line != null) {
-                if (line.startsWith(classAndMethodAndParamNames)) {
-                    StringTokenizer st = new StringTokenizer(line);
-                    st.nextToken(); // className
-                    st.nextToken(); // methodName
-                    st.nextToken(); // parameter names - not needed again
-                    String methodParamTypes = st.nextToken();
-                    Method methods[] = loadedClazz.getMethods();
-                    for (int i = 0; i < methods.length; i++) {
-                        Method method = methods[i];
-                        Class[] parameters = method.getParameterTypes();
-                        String paramTypes = "";
-                        if (method.getName().equals(methodName)) {
-                            for (int k = 0; k < parameters.length; k++) {
-                                paramTypes = paramTypes + parameters[k].getName();
-                                paramTypes = paramTypes + ((k + 1 < parameters.length) ? "," : "");
-                            }
-                            if (paramTypes.equals(methodParamTypes)) {
-                                return method;
-                            }
-                        }
+            Method methods[] = loadedClazz.getMethods();
+            for (int i = 0; i < methods.length; i++) {
+                Method method = methods[i];
+                Class[] parameters = method.getParameterTypes();
+                String paramTypes = "";
+                if (method.getName().equals(methodName)) {
+                    for (int k = 0; k < parameters.length; k++) {
+                        paramTypes = paramTypes + parameters[k].getName();
+                        paramTypes = paramTypes + ((k + 1 < parameters.length) ? "," : "");
+                    }
+                    if (paramTypes.equals(methodParamTypes)) {
+                        return method;
                     }
                 }
+            }
+        }
+        return null;
+    }
+
+    private String getMappingsFromResource(InputStream resourceAsStream) {
+        String mappings;
+        try {
+            if (resourceAsStream == null) {
+                return "";
+            }
+            InputStreamReader inputStreamReader = new InputStreamReader(resourceAsStream);
+            LineNumberReader lineReader = new LineNumberReader(inputStreamReader);
+
+            StringBuffer paramMappingsBuffer = new StringBuffer();
+            String line = readLine(lineReader);
+            while (line != null) {
+                paramMappingsBuffer.append(line).append("\n");
                 line = readLine(lineReader);
             }
+            mappings = paramMappingsBuffer.toString();
         } finally {
             try {
                 if (resourceAsStream != null) {
@@ -77,7 +87,7 @@ public class Paranamer {
             } catch (IOException e) {
             }
         }
-        return null;
+        return mappings;
     }
 
     private String readLine(LineNumberReader lineReader) {
