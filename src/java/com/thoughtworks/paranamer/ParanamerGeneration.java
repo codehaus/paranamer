@@ -47,9 +47,9 @@ public class ParanamerGeneration {
         DocletTag[] alsoKnownAs = method.getTagsByName("previousParamNames");
         for (int k = 0; k < alsoKnownAs.length; k++) {
             String value = alsoKnownAs[k].getValue();
-            retval = retval + className + " " + method.getName() + " " + value + " " + getTypes(parms) + "\n";
+            retval = retval + className + " " + (method.getName() + " " + value + " " + getTypes(parms)).trim() + "\n";
         }
-        retval = retval + className + " " + method.getName() + " " + getParamNames(parms) + " " + getTypes(parms) + "\n";
+        retval = retval + className + " " + (method.getName() + " " + getParamNames(parms) + " " + getTypes(parms)).trim() + "\n";
         return retval;
     }
 
