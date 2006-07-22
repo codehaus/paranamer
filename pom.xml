@@ -103,7 +103,7 @@
     <distributionManagement>
         <site>
             <id>dav.codehaus.org</id>
-            <url>https://dav.codehaus.org/dist/paranamer/</url>
+            <url>https://dav.codehaus.org/paranamer/info</url>
         </site>
     </distributionManagement>
 
@@ -177,14 +177,14 @@
                     </systemProperties>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clover-plugin</artifactId>
-                <configuration>
-                    <licenseLocation>${user.home}/licenses/clover.license</licenseLocation>
-                    <jdk>1.5</jdk>
-                </configuration>
-            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-clover-plugin</artifactId>-->
+                <!--<configuration>-->
+                    <!--<licenseLocation>${user.home}/licenses/clover.license</licenseLocation>-->
+                    <!--<jdk>1.5</jdk>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
         </plugins>
     </build>
 </project>

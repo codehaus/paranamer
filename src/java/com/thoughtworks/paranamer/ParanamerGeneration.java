@@ -23,28 +23,32 @@ public class ParanamerGeneration {
         Arrays.sort(classes);
         for (int i = 0; i < classes.length; i++) {
             JavaClass clazz = classes[i];
-            String pkgName = clazz.getPackage() + ".";
-            String className = pkgName + clazz.getName();
-            JavaMethod[] methods = clazz.getMethods();
-            Arrays.sort(methods);
-            for (int j = 0; j < methods.length; j++) {
-                JavaMethod method = methods[j];
-                List methodList = Arrays.asList(method.getModifiers());
-                if (methodList.contains("public")) {
-                    JavaParameter[] parms = method.getParameters();
-                    DocletTag[] alsoKnownAs = method.getTagsByName("previousParamNames");
-                    for (int k = 0; k < alsoKnownAs.length; k++) {
-                        String value = alsoKnownAs[k].getValue();
-                        retval = retval + className + " " + method.getName() + " " + value + " " + getTypes(parms) + "\n";
-                    }
-                    String meth = method.getName() + " ";
-                    meth = meth + getParamNames(parms) + " ";
-                    String types = getTypes(parms);
-                    meth = meth + types + "\n";
-                    retval = retval + className + " " + meth;
-                }
+            retval = retval + addMethods(clazz.getMethods(), clazz.getPackage() + "." + clazz.getName());
+        }
+        return retval;
+    }
+
+    private String addMethods(JavaMethod[] methods, String className) {
+        String retval = "";
+        Arrays.sort(methods);
+        for (int j = 0; j < methods.length; j++) {
+            JavaMethod method = methods[j];
+            if (Arrays.asList(method.getModifiers()).contains("public")) {
+                retval = retval + addPublicMethod(method, className);
             }
         }
+        return retval;
+    }
+
+    private String addPublicMethod(JavaMethod method, String className) {
+        String retval = "";
+        JavaParameter[] parms = method.getParameters();
+        DocletTag[] alsoKnownAs = method.getTagsByName("previousParamNames");
+        for (int k = 0; k < alsoKnownAs.length; k++) {
+            String value = alsoKnownAs[k].getValue();
+            retval = retval + className + " " + method.getName() + " " + value + " " + getTypes(parms) + "\n";
+        }
+        retval = retval + className + " " + method.getName() + " " + getParamNames(parms) + " " + getTypes(parms) + "\n";
         return retval;
     }
 
@@ -71,6 +75,7 @@ public class ParanamerGeneration {
         new File(outputPath + File.separator + "META-INF" + File.separator).mkdirs();
         FileWriter fileWriter = new FileWriter(outputPath + File.separator + "META-INF" + File.separator + "ParameterNames.txt");
         PrintWriter pw = new PrintWriter(fileWriter);
+        pw.println("format version 1.0");
         pw.println(parameterText);
         pw.close();
     }

@@ -23,48 +23,59 @@ public class Paranamer {
     }
 
     /**
+     * Copy the body of the method to wherever you want to - it means you won't have to rely on
+     * one more jar in your app.
      *
      * @previousParamNames classLoader,c,m,p
      */
     public Method lookup(ClassLoader classLoader, String className, String methodName, String paramNames) {
         InputStream resourceAsStream = classLoader.getResourceAsStream("META-INF/ParameterNames.txt");
-        if (resourceAsStream == null) {
-            return null;
-        }
-        InputStreamReader inputStreamReader = new InputStreamReader(resourceAsStream);
-        LineNumberReader lineReader = new LineNumberReader(inputStreamReader);
-        String line = readLine(lineReader);
-        String classAndMethodAndParamNames = className + " " + methodName + " " + paramNames;
-        Class loadedClazz = null;
         try {
-            loadedClazz = classLoader.loadClass(className);
-        } catch (ClassNotFoundException e) {
-            return null; // or could throw a/the exception
-        }
-        while (line != null) {
-            if (line.startsWith(classAndMethodAndParamNames)) {
-                StringTokenizer st = new StringTokenizer(line);
-                st.nextToken(); // className
-                st.nextToken(); // methodName
-                st.nextToken(); // parameter names - not needed again
-                String methodParamTypes = st.nextToken();
-                Method methods[] = loadedClazz.getMethods();
-                for (int i = 0; i < methods.length; i++) {
-                    Method method = methods[i];
-                    Class[] parameters = method.getParameterTypes();
-                    String paramTypes = "";
-                    if (method.getName().equals(methodName)) {
-                        for (int k = 0; k < parameters.length; k++) {
-                            paramTypes = paramTypes + parameters[k].getName();
-                            paramTypes = paramTypes + ((k + 1 < parameters.length) ? "," : "");
-                        }
-                        if (paramTypes.equals(methodParamTypes)) {
-                            return method;
+            if (resourceAsStream == null) {
+                return null;
+            }
+            InputStreamReader inputStreamReader = new InputStreamReader(resourceAsStream);
+            LineNumberReader lineReader = new LineNumberReader(inputStreamReader);
+            String line = readLine(lineReader);
+            String classAndMethodAndParamNames = className + " " + methodName + " " + paramNames;
+            Class loadedClazz = null;
+            try {
+                loadedClazz = classLoader.loadClass(className);
+            } catch (ClassNotFoundException e) {
+                return null; // or could throw a/the exception
+            }
+            while (line != null) {
+                if (line.startsWith(classAndMethodAndParamNames)) {
+                    StringTokenizer st = new StringTokenizer(line);
+                    st.nextToken(); // className
+                    st.nextToken(); // methodName
+                    st.nextToken(); // parameter names - not needed again
+                    String methodParamTypes = st.nextToken();
+                    Method methods[] = loadedClazz.getMethods();
+                    for (int i = 0; i < methods.length; i++) {
+                        Method method = methods[i];
+                        Class[] parameters = method.getParameterTypes();
+                        String paramTypes = "";
+                        if (method.getName().equals(methodName)) {
+                            for (int k = 0; k < parameters.length; k++) {
+                                paramTypes = paramTypes + parameters[k].getName();
+                                paramTypes = paramTypes + ((k + 1 < parameters.length) ? "," : "");
+                            }
+                            if (paramTypes.equals(methodParamTypes)) {
+                                return method;
+                            }
                         }
                     }
                 }
+                line = readLine(lineReader);
             }
-            line = readLine(lineReader);
+        } finally {
+            try {
+                if (resourceAsStream != null) {
+                    resourceAsStream.close();
+                }
+            } catch (IOException e) {
+            }
         }
         return null;
     }

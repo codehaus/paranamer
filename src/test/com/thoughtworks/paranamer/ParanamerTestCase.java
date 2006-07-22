@@ -14,10 +14,10 @@ public class ParanamerTestCase extends TestCase {
             "com.thoughtworks.paranamer.Paranamer lookup classLoader,c,m,p java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
             "com.thoughtworks.paranamer.Paranamer lookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
             "com.thoughtworks.paranamer.Paranamer uncheckedLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
-            "com.thoughtworks.paranamer.ParanamerException ParanamerException string java.lang.String\n" +
+            "com.thoughtworks.paranamer.ParanamerException ParanamerException message java.lang.String\n" +
             "com.thoughtworks.paranamer.ParanamerGeneration generate sourcePath java.lang.String\n" +
             "com.thoughtworks.paranamer.ParanamerGeneration write outputPath,parameterText java.lang.String,java.lang.String\n" +
-            "com.thoughtworks.paranamer.ParanamerRuntimeException ParanamerRuntimeException string java.lang.String\n" +
+            "com.thoughtworks.paranamer.ParanamerRuntimeException ParanamerRuntimeException message java.lang.String\n" +
             "com.thoughtworks.paranamer.ParanamerTask execute  \n" +
             "com.thoughtworks.paranamer.ParanamerTask setOutputPath outputPath java.lang.String\n" +
             "com.thoughtworks.paranamer.ParanamerTask setSourcePath sourcePath java.lang.String\n";
@@ -39,7 +39,7 @@ public class ParanamerTestCase extends TestCase {
         new ParanamerGeneration().write(dir.getAbsolutePath(), allParameters);
         String file = new File("target/classes/META-INF/ParameterNames.txt").getAbsolutePath();
         assertTrue(new File(file).exists());
-        assertEquals("com.thoughtworks.paranamer.Paranamer checkedLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String",
+        assertEquals("format version 1.0",
                 new LineNumberReader(new FileReader(file)).readLine());
     }
 
