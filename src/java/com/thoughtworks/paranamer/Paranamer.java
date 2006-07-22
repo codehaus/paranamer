@@ -64,21 +64,19 @@ public class Paranamer {
     }
 
     private String getMappingsFromResource(InputStream resourceAsStream) {
-        String mappings;
+        StringBuffer paramMappingsBuffer = new StringBuffer();
         try {
             if (resourceAsStream == null) {
                 return "";
             }
             InputStreamReader inputStreamReader = new InputStreamReader(resourceAsStream);
             LineNumberReader lineReader = new LineNumberReader(inputStreamReader);
-
-            StringBuffer paramMappingsBuffer = new StringBuffer();
             String line = readLine(lineReader);
             while (line != null) {
                 paramMappingsBuffer.append(line).append("\n");
                 line = readLine(lineReader);
             }
-            mappings = paramMappingsBuffer.toString();
+            return paramMappingsBuffer.toString();
         } finally {
             try {
                 if (resourceAsStream != null) {
@@ -87,7 +85,6 @@ public class Paranamer {
             } catch (IOException e) {
             }
         }
-        return mappings;
     }
 
     private String readLine(LineNumberReader lineReader) {
