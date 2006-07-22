@@ -6,8 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
-import com.thoughtworks.paranamer.Paranamer;
-
 public class ParanamerExampleTestCase extends TestCase {
 
 
@@ -30,8 +28,6 @@ public class ParanamerExampleTestCase extends TestCase {
     // These were encoded via a doclet tag on the method in question:
     //
     //   @previousParamNames clazz,cmapn
-
-
     public void testMethodCanBeRetrievedByParameterNamesPreviouslyUsed() throws IOException, NoSuchMethodException {
         Method method = new ParanamerImpl().lookup(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerImpl", "lookup", "classLoader,c,m,p");
         assertEquals(ParanamerImpl.class.getMethod("lookup", new Class[]{ClassLoader.class, String.class, String.class, String.class}), method);

@@ -25,6 +25,8 @@ public class ParanamerImpl implements Paranamer {
     }
 
     /**
+     * Lookup a method, and return null if its not there
+     *
      * Copy the body of the method to wherever you want to - it means you won't have to rely on
      * one more jar in your app.
      *
