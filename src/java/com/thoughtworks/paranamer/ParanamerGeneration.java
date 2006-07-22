@@ -1,17 +1,16 @@
 package com.thoughtworks.paranamer;
 
 import com.thoughtworks.qdox.JavaDocBuilder;
+import com.thoughtworks.qdox.model.DocletTag;
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaMethod;
 import com.thoughtworks.qdox.model.JavaParameter;
-import com.thoughtworks.qdox.model.DocletTag;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
-import java.util.List;
 
 public class ParanamerGeneration {
 
@@ -23,7 +22,9 @@ public class ParanamerGeneration {
         Arrays.sort(classes);
         for (int i = 0; i < classes.length; i++) {
             JavaClass clazz = classes[i];
-            retval = retval + addMethods(clazz.getMethods(), clazz.getPackage() + "." + clazz.getName());
+            if (!clazz.isInterface()) {
+                retval = retval + addMethods(clazz.getMethods(), clazz.getPackage() + "." + clazz.getName());
+            }
         }
         return retval;
     }
@@ -83,9 +84,6 @@ public class ParanamerGeneration {
     private String comma(int k, int size) {
         return (k + 1 < size) ? "," : "";
     }
-
-
-
 
 
 }

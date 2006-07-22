@@ -10,13 +10,13 @@ import java.io.FileReader;
 public class ParanamerTestCase extends TestCase {
 
     String allParameters =
-            "com.thoughtworks.paranamer.Paranamer checkedLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
-            "com.thoughtworks.paranamer.Paranamer lookup classLoader,c,m,p java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
-            "com.thoughtworks.paranamer.Paranamer lookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
-            "com.thoughtworks.paranamer.Paranamer uncheckedLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
             "com.thoughtworks.paranamer.ParanamerException ParanamerException message java.lang.String\n" +
             "com.thoughtworks.paranamer.ParanamerGeneration generate sourcePath java.lang.String\n" +
             "com.thoughtworks.paranamer.ParanamerGeneration write outputPath,parameterText java.lang.String,java.lang.String\n" +
+            "com.thoughtworks.paranamer.ParanamerImpl checkedLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
+            "com.thoughtworks.paranamer.ParanamerImpl lookup classLoader,c,m,p java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
+            "com.thoughtworks.paranamer.ParanamerImpl lookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
+            "com.thoughtworks.paranamer.ParanamerImpl uncheckedLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
             "com.thoughtworks.paranamer.ParanamerRuntimeException ParanamerRuntimeException message java.lang.String\n" +
             "com.thoughtworks.paranamer.ParanamerTask execute  \n" +
             "com.thoughtworks.paranamer.ParanamerTask setOutputPath outputPath java.lang.String\n" +
@@ -44,12 +44,12 @@ public class ParanamerTestCase extends TestCase {
     }
 
     public void testMethodCantBeRetrievedIfItAintThere() throws IOException {
-        Object method = new Paranamer().lookup(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerGeneration", "generate", "hello,goodbye");
+        Object method = new ParanamerImpl().lookup(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerGeneration", "generate", "hello,goodbye");
         assertNull(method);
     }
 
     public void testBogusClassEndsLookup() throws IOException {
-        Object method = new Paranamer().lookup(Paranamer.class.getClassLoader(), "foo.Bar", "generate", "hello,goodbye");
+        Object method = new ParanamerImpl().lookup(Paranamer.class.getClassLoader(), "foo.Bar", "generate", "hello,goodbye");
         assertNull(method);
     }
 
@@ -57,18 +57,18 @@ public class ParanamerTestCase extends TestCase {
         File file = new File("target/classes/META-INF/ParameterNames.txt");
         file.delete();
         assertFalse(file.exists());
-        Object method = new Paranamer().lookup(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerGeneration", "generate", "sourcePath,rootPackage");
+        Object method = new ParanamerImpl().lookup(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerGeneration", "generate", "sourcePath,rootPackage");
         assertNull(method);
     }
 
     public void testMethodCantBeRetrievedForClassThatAintThere() throws IOException {
-        Object method = new Paranamer().lookup(Paranamer.class.getClassLoader(), "paranamer.Footle", "generate", "sourcePath,rootPackage");
+        Object method = new ParanamerImpl().lookup(Paranamer.class.getClassLoader(), "paranamer.Footle", "generate", "sourcePath,rootPackage");
         assertNull(method);
     }
 
     public void testCheckedMethodRetrievalFailure() throws IOException {
         try {
-            new Paranamer().checkedLookup(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerGeneration","generate","hello,goodbye");
+            new ParanamerImpl().checkedLookup(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerGeneration","generate","hello,goodbye");
             fail("shoulda barfed");
         } catch (ParanamerException e) {
             // expected
@@ -77,7 +77,7 @@ public class ParanamerTestCase extends TestCase {
 
     public void testUncheckedMethodRetrievalFailure() throws IOException {
         try {
-            new Paranamer().uncheckedLookup(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerGeneration", "generate", "hello,goodbye");
+            new ParanamerImpl().uncheckedLookup(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerGeneration", "generate", "hello,goodbye");
             fail("shoulda barfed");
         } catch (ParanamerRuntimeException e) {
             // expected
@@ -86,7 +86,7 @@ public class ParanamerTestCase extends TestCase {
 
     public void testMethodRetrievalFailureIfNoParametersTextFile() throws IOException {
         new File("/Users/paul/scm/oss/Paranamer/classes/META-INF/ParameterNames.txt").delete();
-        Object method = new Paranamer().lookup(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerGeneration", "generate", "hello,goodbye");
+        Object method = new ParanamerImpl().lookup(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerGeneration", "generate", "hello,goodbye");
         assertNull(method);
     }
 
