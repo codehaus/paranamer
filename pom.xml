@@ -103,7 +103,7 @@
     <distributionManagement>
         <site>
             <id>dav.codehaus.org</id>
-            <url>https://dav.codehaus.org/paranamer/info</url>
+            <url>dav:https://dav.codehaus.org/paranamer/info</url>
         </site>
     </distributionManagement>
 

@@ -3,6 +3,8 @@ package com.thoughtworks.paranamer;
 import junit.framework.TestCase;
 
 import java.lang.reflect.Method;
+import java.io.File;
+import java.io.IOException;
 
 public class CachingParanamerTestCase extends TestCase {
 
@@ -125,9 +127,14 @@ public class CachingParanamerTestCase extends TestCase {
     }
 
 
-    public void testCanChainToDefaultImpl() {
+    public void testCanChainToDefaultImpl() throws IOException {
+        //setup
+        ParanamerGeneration paranamerGeneration = new ParanamerGeneration();
+        String parameterSignatures = paranamerGeneration.generate(new File(".").getAbsolutePath() + "/src/java");
+        paranamerGeneration.write(new File(".").getAbsolutePath() + "/target/classes/", parameterSignatures);
+
         Paranamer cachingParanamer = new CachingParanamer();
-        Method m = cachingParanamer.uncheckedLookup(ParanamerImpl.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerImpl", "lookup", "classLoader,className,methodName,paramNames");
+        Method m = cachingParanamer.lookup(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerImpl", "lookup", "classLoader,className,methodName,paramNames");
         assertNotNull(m);
     }
 
