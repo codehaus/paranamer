@@ -52,6 +52,15 @@ public class CachingParanamerTestCase extends TestCase {
         assertEquals(2, count);
     }
 
+    public void testForcedNullOnCheckedLookup() {
+        method = null;
+        Paranamer cachingParanamer = new CachingParanamer(paranamer);
+        Method m = cachingParanamer.lookup(this.getClass().getClassLoader(), "huey", "duey", "luis");
+        assertNull(m);
+    }
+
+
+
     public void testCachedOnCheckedLookup() throws ParanamerException {
         Paranamer cachingParanamer = new CachingParanamer(paranamer);
         Method m = cachingParanamer.checkedLookup(this.getClass().getClassLoader(), "huey", "duey", "luis");
@@ -70,6 +79,18 @@ public class CachingParanamerTestCase extends TestCase {
         m = cachingParanamer.lookup(this.getClass().getClassLoader(), "huey", "duey", "horatio");
         assertEquals(method, m);
         assertEquals(2, count);
+    }
+
+
+    public void testForcedBarfOnCheckedLookup() {
+        method = null;
+        Paranamer cachingParanamer = new CachingParanamer(paranamer);
+        try {
+            cachingParanamer.checkedLookup(this.getClass().getClassLoader(), "huey", "duey", "luis");
+            fail("shoulda barfed");
+        } catch (ParanamerException e) {
+            // expected
+        }
     }
 
     public void testCachedOnUncheckedLookup() {
@@ -91,6 +112,18 @@ public class CachingParanamerTestCase extends TestCase {
         assertEquals(method, m);
         assertEquals(2, count);
     }
+
+    public void testForcedBarfOnUncheckedLookup() {
+        method = null;
+        Paranamer cachingParanamer = new CachingParanamer(paranamer);
+        try {
+            cachingParanamer.uncheckedLookup(this.getClass().getClassLoader(), "huey", "duey", "luis");
+            fail("shoulda barfed");
+        } catch (ParanamerRuntimeException e) {
+            // expected
+        }
+    }
+
 
     public void testCanChainToDefaultImpl() {
         Paranamer cachingParanamer = new CachingParanamer();
