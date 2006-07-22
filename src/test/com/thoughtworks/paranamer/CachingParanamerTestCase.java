@@ -92,5 +92,10 @@ public class CachingParanamerTestCase extends TestCase {
         assertEquals(2, count);
     }
 
+    public void testCanChainToDefaultImpl() {
+        Paranamer cachingParanamer = new CachingParanamer();
+        Method m = cachingParanamer.uncheckedLookup(ParanamerImpl.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerImpl", "lookup", "classLoader,className,methodName,paramNames");
+        assertNotNull(m);
+    }
 
 }
