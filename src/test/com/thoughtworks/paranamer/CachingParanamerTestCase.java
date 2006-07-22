@@ -52,5 +52,45 @@ public class CachingParanamerTestCase extends TestCase {
         assertEquals(2, count);
     }
 
+    public void testCachedOnCheckedLookup() throws ParanamerException {
+        Paranamer cachingParanamer = new CachingParanamer(paranamer);
+        Method m = cachingParanamer.checkedLookup(this.getClass().getClassLoader(), "huey", "duey", "luis");
+        assertEquals(method, m);
+        assertEquals(1, count);
+        m = cachingParanamer.lookup(this.getClass().getClassLoader(), "huey", "duey", "luis");
+        assertEquals(method, m);
+        assertEquals(1, count);
+    }
+
+    public void testNotCachedIfDiffeentOnCheckedLookup() throws ParanamerException {
+        Paranamer cachingParanamer = new CachingParanamer(paranamer);
+        Method m = cachingParanamer.checkedLookup(this.getClass().getClassLoader(), "huey", "duey", "luis");
+        assertEquals(method, m);
+        assertEquals(1, count);
+        m = cachingParanamer.lookup(this.getClass().getClassLoader(), "huey", "duey", "horatio");
+        assertEquals(method, m);
+        assertEquals(2, count);
+    }
+
+    public void testCachedOnUncheckedLookup() {
+        Paranamer cachingParanamer = new CachingParanamer(paranamer);
+        Method m = cachingParanamer.uncheckedLookup(this.getClass().getClassLoader(), "huey", "duey", "luis");
+        assertEquals(method, m);
+        assertEquals(1, count);
+        m = cachingParanamer.lookup(this.getClass().getClassLoader(), "huey", "duey", "luis");
+        assertEquals(method, m);
+        assertEquals(1, count);
+    }
+
+    public void testNotCachedIfDiffeentOnUncheckedLookup() {
+        Paranamer cachingParanamer = new CachingParanamer(paranamer);
+        Method m = cachingParanamer.uncheckedLookup(this.getClass().getClassLoader(), "huey", "duey", "luis");
+        assertEquals(method, m);
+        assertEquals(1, count);
+        m = cachingParanamer.lookup(this.getClass().getClassLoader(), "huey", "duey", "horatio");
+        assertEquals(method, m);
+        assertEquals(2, count);
+    }
+
 
 }

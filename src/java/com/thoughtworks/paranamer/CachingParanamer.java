@@ -19,11 +19,21 @@ public class CachingParanamer implements Paranamer {
     }
 
     public synchronized Method checkedLookup(ClassLoader classLoader, String className, String methodName, String paramNames) throws ParanamerException {
-        return null;
+        Method m = lookup(classLoader, className, methodName, paramNames);
+        if (m != null) {
+            return m;
+        } else {
+            throw new ParanamerException("Paranamer could not find method signature");
+        }
     }
 
     public Method uncheckedLookup(ClassLoader classLoader, String className, String methodName, String paramNames) {
-        return null;
+        Method m = lookup(classLoader, className, methodName, paramNames);
+        if (m != null) {
+            return m;
+        } else {
+            throw new ParanamerRuntimeException("Paranamer could not find method signature");
+        }
     }
 
     public Method lookup(ClassLoader classLoader, String className, String methodName, String paramNames) {
