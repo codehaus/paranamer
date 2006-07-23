@@ -101,13 +101,31 @@
     </licenses>
 
     <distributionManagement>
+        <repository>
+            <id>codehaus.org</id>
+            <name>ParaNamer Central Repository</name>
+            <url>dav:https://dav.codehaus.org/repository/paranamer/</url>
+        </repository>
+        <snapshotRepository>
+            <id>codehaus.org</id>
+            <name>ParaNamer Central Development Repository</name>
+            <url>dav:https://dav.codehaus.org/snapshots.repository/paranamer/</url>
+        </snapshotRepository>
         <site>
             <id>dav.codehaus.org</id>
-            <url>dav:https://dav.codehaus.org/paranamer/info</url>
+            <name>ParaNamer Maven site</name>
+            <url>dav:https://dav.codehaus.org/paranamer/info/</url>
         </site>
     </distributionManagement>
 
     <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-webdav</artifactId>
+                <version>1.0-beta-1</version>
+            </extension>
+        </extensions>
         <sourceDirectory>src/java</sourceDirectory>
         <testSourceDirectory>src/test</testSourceDirectory>
         <resources>
@@ -178,12 +196,12 @@
                 </configuration>
             </plugin>
             <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-clover-plugin</artifactId>-->
-                <!--<configuration>-->
-                    <!--<licenseLocation>${user.home}/licenses/clover.license</licenseLocation>-->
-                    <!--<jdk>1.5</jdk>-->
-                <!--</configuration>-->
+            <!--<groupId>org.apache.maven.plugins</groupId>-->
+            <!--<artifactId>maven-clover-plugin</artifactId>-->
+            <!--<configuration>-->
+            <!--<licenseLocation>${user.home}/licenses/clover.license</licenseLocation>-->
+            <!--<jdk>1.5</jdk>-->
+            <!--</configuration>-->
             <!--</plugin>-->
         </plugins>
     </build>
