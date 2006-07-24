@@ -110,17 +110,17 @@
 
     <distributionManagement>
         <repository>
-            <id>codehaus.org</id>
+            <id>codehaus-paranamer-repository</id>
             <name>ParaNamer Central Repository</name>
             <url>dav:https://dav.codehaus.org/repository/paranamer/</url>
         </repository>
         <snapshotRepository>
-            <id>codehaus.org</id>
+            <id>codehaus-paranamer-snapshot-repository</id>
             <name>ParaNamer Central Development Repository</name>
             <url>dav:https://dav.codehaus.org/snapshots.repository/paranamer/</url>
         </snapshotRepository>
         <site>
-            <id>dav.codehaus.org</id>
+            <id>codehaus-paranamer-site</id>
             <name>ParaNamer Maven site</name>
             <url>dav:https://dav.codehaus.org/paranamer/info/</url>
         </site>
