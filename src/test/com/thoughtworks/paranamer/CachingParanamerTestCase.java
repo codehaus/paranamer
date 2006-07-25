@@ -30,6 +30,10 @@ public class CachingParanamerTestCase extends TestCase {
                 count++;
                 return method;
             }
+
+            public String[] lookupParameterNames(ClassLoader classLoader, String className, String methodName) {
+                return new String[] {"foo,bar"};
+            }
         };
 
     }
@@ -137,5 +141,14 @@ public class CachingParanamerTestCase extends TestCase {
         Method m = cachingParanamer.lookup(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerImpl", "lookup", "classLoader,className,methodName,paramNames");
         assertNotNull(m);
     }
+
+    public void testLookupOfParameterNames() {
+
+        Paranamer cachingParanamer = new CachingParanamer(paranamer);
+        String[] paramNameChoices = cachingParanamer.lookupParameterNames(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerImpl", "lookup");
+        assertEquals(1, paramNameChoices.length);
+        assertEquals("foo,bar", paramNameChoices[0]);
+    }
+
 
 }
