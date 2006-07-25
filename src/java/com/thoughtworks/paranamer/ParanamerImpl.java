@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.IOException;
+import java.util.List;
+import java.util.ArrayList;
 
 public class ParanamerImpl implements Paranamer {
 
@@ -34,7 +36,7 @@ public class ParanamerImpl implements Paranamer {
      */
     public Method lookup(ClassLoader classLoader, String className, String methodName, String paramNames) {
         String mappings = getMappingsFromResource(classLoader.getResourceAsStream("META-INF/ParameterNames.txt"));
-        String classAndMethodAndParamNames = className + " " + methodName + " " + paramNames;
+        String classAndMethodAndParamNames = className + " " + methodName + " " + paramNames + " ";
         int ix = mappings.indexOf(classAndMethodAndParamNames);
         if (ix != -1) {
             int start = ix + classAndMethodAndParamNames.length();
@@ -95,5 +97,20 @@ public class ParanamerImpl implements Paranamer {
         } catch (IOException e) {
             return null;
         }
+    }
+
+    public String[] lookup(ClassLoader classLoader, String className, String methodName) {
+        String mappings = getMappingsFromResource(classLoader.getResourceAsStream("META-INF/ParameterNames.txt"));
+        if (mappings == null) {
+            return new String[0];
+        }
+        String classAndMethodName = className + " " + methodName;
+        int ix = mappings.indexOf(classAndMethodName);
+        List matches = new ArrayList();
+        while (ix > 0) {
+            matches.add(mappings.substring(ix + classAndMethodName.length(), mappings.indexOf(" ", ix + classAndMethodName.length()+1)).trim());
+            ix = mappings.indexOf(classAndMethodName,ix+1);
+        }
+        return (String[]) matches.toArray(new String[matches.size()]);
     }
 }

@@ -6,8 +6,8 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
-public class ParanamerExampleTestCase extends TestCase {
 
+public class ParanamerExampleTestCase extends TestCase {
 
     //Ignore this. You, the end user, will use the Ant task to generate parameter names.
     protected void setUp() throws Exception {
@@ -23,6 +23,19 @@ public class ParanamerExampleTestCase extends TestCase {
         Method method = new ParanamerImpl().lookup(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerImpl", "lookup", "classLoader,className,methodName,paramNames");
         assertEquals(ParanamerImpl.class.getMethod("lookup", new Class[]{ClassLoader.class, String.class, String.class, String.class}), method);
     }
+
+    // An example of a test that looks ParameterNames up based on class/method only
+
+    public void testParamerNameChoicesCanBeRetrievedForAMethodName() throws IOException, NoSuchMethodException {
+        String[] paramNames = new ParanamerImpl().lookup(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerImpl", "lookup");
+        assertEquals(3, paramNames.length);
+        assertEquals("classLoader,className,methodName", paramNames[0]);
+        assertEquals("classLoader,c,m,p", paramNames[1]);
+        assertEquals("classLoader,className,methodName,paramNames", paramNames[2]);
+
+    }
+
+
 
     // An example of a test that looks something up by it's OLD parameter names
     // These were encoded via a doclet tag on the method in question:

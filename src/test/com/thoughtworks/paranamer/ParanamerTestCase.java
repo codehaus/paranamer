@@ -18,6 +18,7 @@ public class ParanamerTestCase extends TestCase {
             "com.thoughtworks.paranamer.ParanamerException ParanamerException message java.lang.String\n" +
             "com.thoughtworks.paranamer.ParanamerGeneration generate sourcePath java.lang.String\n" +
             "com.thoughtworks.paranamer.ParanamerGeneration write outputPath,parameterText java.lang.String,java.lang.String\n" +
+            "com.thoughtworks.paranamer.ParanamerImpl lookup classLoader,className,methodName java.lang.ClassLoader,java.lang.String,java.lang.String\n" +
             "com.thoughtworks.paranamer.ParanamerImpl checkedLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
             "com.thoughtworks.paranamer.ParanamerImpl lookup classLoader,c,m,p java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
             "com.thoughtworks.paranamer.ParanamerImpl lookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
