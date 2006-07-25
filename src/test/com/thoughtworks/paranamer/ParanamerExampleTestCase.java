@@ -28,11 +28,9 @@ public class ParanamerExampleTestCase extends TestCase {
 
     public void testParamerNameChoicesCanBeRetrievedForAMethodName() throws IOException, NoSuchMethodException {
         String[] paramNames = new ParanamerImpl().lookupParameterNames(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerImpl", "lookup");
-        assertEquals(3, paramNames.length);
-        assertEquals("classLoader,className,methodName", paramNames[0]);
-        assertEquals("classLoader,c,m,p", paramNames[1]);
-        assertEquals("classLoader,className,methodName,paramNames", paramNames[2]);
-
+        assertEquals(2, paramNames.length);
+        assertEquals("classLoader,c,m,p", paramNames[0]);
+        assertEquals("classLoader,className,methodName,paramNames", paramNames[1]);
     }
 
 

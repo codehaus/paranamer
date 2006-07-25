@@ -104,7 +104,7 @@ public class ParanamerImpl implements Paranamer {
         if (mappings == null) {
             return new String[0];
         }
-        String classAndMethodName = className + " " + methodName;
+        String classAndMethodName = className + " " + methodName + " ";
         int ix = mappings.indexOf(classAndMethodName);
         List matches = new ArrayList();
         while (ix > 0) {
