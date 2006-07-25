@@ -12,13 +12,14 @@ public class ParanamerTestCase extends TestCase {
     String allParameters =
             "com.thoughtworks.paranamer.CachingParanamer CachingParanamer\n" +
             "com.thoughtworks.paranamer.CachingParanamer CachingParanamer paranamer com.thoughtworks.paranamer.Paranamer\n" +
+            "com.thoughtworks.paranamer.CachingParanamer lookupParameterNames classLoader,className,methodName java.lang.ClassLoader,java.lang.String,java.lang.String\n" +
             "com.thoughtworks.paranamer.CachingParanamer checkedLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
             "com.thoughtworks.paranamer.CachingParanamer lookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
             "com.thoughtworks.paranamer.CachingParanamer uncheckedLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
             "com.thoughtworks.paranamer.ParanamerException ParanamerException message java.lang.String\n" +
             "com.thoughtworks.paranamer.ParanamerGeneration generate sourcePath java.lang.String\n" +
             "com.thoughtworks.paranamer.ParanamerGeneration write outputPath,parameterText java.lang.String,java.lang.String\n" +
-            "com.thoughtworks.paranamer.ParanamerImpl lookup classLoader,className,methodName java.lang.ClassLoader,java.lang.String,java.lang.String\n" +
+            "com.thoughtworks.paranamer.ParanamerImpl lookupParameterNames classLoader,className,methodName java.lang.ClassLoader,java.lang.String,java.lang.String\n" +
             "com.thoughtworks.paranamer.ParanamerImpl checkedLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
             "com.thoughtworks.paranamer.ParanamerImpl lookup classLoader,c,m,p java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
             "com.thoughtworks.paranamer.ParanamerImpl lookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
