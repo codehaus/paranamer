@@ -99,7 +99,7 @@ public class ParanamerImpl implements Paranamer {
         }
     }
 
-    public String[] lookup(ClassLoader classLoader, String className, String methodName) {
+    public String[] lookupParameterNames(ClassLoader classLoader, String className, String methodName) {
         String mappings = getMappingsFromResource(classLoader.getResourceAsStream("META-INF/ParameterNames.txt"));
         if (mappings == null) {
             return new String[0];
