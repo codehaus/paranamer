@@ -36,7 +36,7 @@ public class ParanamerImpl implements Paranamer {
      */
     public Method lookup(ClassLoader classLoader, String className, String methodName, String paramNames) {
         String mappings = getMappingsFromResource(classLoader.getResourceAsStream("META-INF/ParameterNames.txt"));
-        String classAndMethodAndParamNames = className + " " + methodName + " " + paramNames + " ";
+        String classAndMethodAndParamNames = "\n" + className + " " + methodName + " " + paramNames + " ";
         int ix = mappings.indexOf(classAndMethodAndParamNames);
         if (ix != -1) {
             int start = ix + classAndMethodAndParamNames.length();
@@ -104,7 +104,7 @@ public class ParanamerImpl implements Paranamer {
         if (mappings == null) {
             return new String[0];
         }
-        String classAndMethodName = className + " " + methodName + " ";
+        String classAndMethodName = "\n" + className + " " + methodName + " ";
         int ix = mappings.indexOf(classAndMethodName);
         List matches = new ArrayList();
         while (ix > 0) {
