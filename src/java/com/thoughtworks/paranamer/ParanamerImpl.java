@@ -24,9 +24,7 @@ public class ParanamerImpl implements Paranamer {
         String classAndMethodAndParamNames = "\n" + className + " " + methodName + " " + paramNames + " ";
         int ix = mappings.indexOf(classAndMethodAndParamNames);
         if (ix != -1) {
-            int start = ix + classAndMethodAndParamNames.length();
-            int end = mappings.indexOf("\n", start + 1);
-            String methodParamTypes = mappings.substring(start, end).trim();
+            String methodParamTypes = extractParamerTypesFromFoundMethod(ix, classAndMethodAndParamNames, mappings);
             Class loadedClazz;
             try {
                 loadedClazz = classLoader.loadClass(className);
@@ -37,12 +35,8 @@ public class ParanamerImpl implements Paranamer {
             for (int i = 0; i < methods.length; i++) {
                 Method method = methods[i];
                 Class[] parameters = method.getParameterTypes();
-                String paramTypes = "";
                 if (method.getName().equals(methodName)) {
-                    for (int k = 0; k < parameters.length; k++) {
-                        paramTypes = paramTypes + parameters[k].getName();
-                        paramTypes = paramTypes + ((k + 1 < parameters.length) ? "," : "");
-                    }
+                    String paramTypes = turnClassArrayIntoRepresentativeString(parameters);
                     if (paramTypes.equals(methodParamTypes)) {
                         return method;
                     }
@@ -101,12 +95,10 @@ public class ParanamerImpl implements Paranamer {
 
     public Constructor lookupConstructor(ClassLoader classLoader, String className, String paramNames) {
         String mappings = getMappingsFromResource(classLoader.getResourceAsStream("META-INF/ParameterNames.txt"));
-        String classAndMethodAndParamNames = "\n" + className + " " + className.substring(className.lastIndexOf(".") + 1) + " " + paramNames + " ";
-        int ix = mappings.indexOf(classAndMethodAndParamNames);
+        String classAndConstructorAndParamNames = "\n" + className + " " + className.substring(className.lastIndexOf(".") + 1) + " " + paramNames + " ";
+        int ix = mappings.indexOf(classAndConstructorAndParamNames);
         if (ix != -1) {
-            int start = ix + classAndMethodAndParamNames.length();
-            int end = mappings.indexOf("\n", start + 1);
-            String methodParamTypes = mappings.substring(start, end).trim();
+            String methodParamTypes = extractParamerTypesFromFoundMethod(ix, classAndConstructorAndParamNames, mappings);
             Class loadedClazz;
             try {
                 loadedClazz = classLoader.loadClass(className);
@@ -117,16 +109,28 @@ public class ParanamerImpl implements Paranamer {
             for (int i = 0; i < constructors.length; i++) {
                 Constructor constructor = constructors[i];
                 Class[] parameters = constructor.getParameterTypes();
-                String paramTypes = "";
-                for (int k = 0; k < parameters.length; k++) {
-                    paramTypes = paramTypes + parameters[k].getName();
-                    paramTypes = paramTypes + ((k + 1 < parameters.length) ? "," : "");
-                }
+                String paramTypes = turnClassArrayIntoRepresentativeString(parameters);
                 if (paramTypes.equals(methodParamTypes)) {
                     return constructor;
                 }
             }
         }
         return null;
+    }
+
+    private String extractParamerTypesFromFoundMethod(int ix, String classAndConstructorAndParamNames, String mappings) {
+        int start = ix + classAndConstructorAndParamNames.length();
+        int end = mappings.indexOf("\n", start + 1);
+        String methodParamTypes = mappings.substring(start, end).trim();
+        return methodParamTypes;
+    }
+
+    private String turnClassArrayIntoRepresentativeString(Class[] parameters) {
+        String paramTypes = "";
+        for (int k = 0; k < parameters.length; k++) {
+            paramTypes = paramTypes + parameters[k].getName();
+            paramTypes = paramTypes + ((k + 1 < parameters.length) ? "," : "");
+        }
+        return paramTypes;
     }
 }
