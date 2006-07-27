@@ -7,7 +7,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
 
 
-public class ParanamerExampleTestCase extends TestCase {
+public class ParanamerExampleTestCase extends AbstractParanamerTestCase {
 
     // An example of a test that looks something up by it's parameter names
 

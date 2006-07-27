@@ -34,6 +34,7 @@ public class ParanamerTestCase extends TestCase {
                 "com.thoughtworks.paranamer.ParanamerTask setSourcePath sourcePath java.lang.String\n" +
                 "com.thoughtworks.paranamer.UncheckedParanamer UncheckedParanamer\n" +
                 "com.thoughtworks.paranamer.UncheckedParanamer UncheckedParanamer delegate com.thoughtworks.paranamer.Paranamer\n" +
+                "com.thoughtworks.paranamer.UncheckedParanamer uncheckedConstructorLookup classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String\n" +
                 "com.thoughtworks.paranamer.UncheckedParanamer uncheckedMethodLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n";
     String expected1 = "com.thoughtworks.paranamer.Paranamer lookupMethod clazz,classMethodAndParamNames java.lang.Class,java.lang.String\n";
 

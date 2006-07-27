@@ -1,6 +1,7 @@
 package com.thoughtworks.paranamer;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
 
 public class UncheckedParanamer {
 
@@ -24,5 +25,11 @@ public class UncheckedParanamer {
     }
 
 
-
+    public Constructor uncheckedConstructorLookup(ClassLoader classLoader, String className, String paramNames) {
+        Constructor ctor = delegate.lookupConstructor(classLoader, className, paramNames);
+        if (ctor == null) {
+            throw new ParanamerRuntimeException("Paranamer could not find constructor signature");
+        }
+        return ctor;
+    }
 }
