@@ -3,36 +3,37 @@ package com.thoughtworks.paranamer;
 import junit.framework.TestCase;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
-import java.io.FileReader;
 
 public class ParanamerTestCase extends TestCase {
 
     String allParameters =
-            "com.thoughtworks.paranamer.CachingParanamer CachingParanamer\n" +
-                    "com.thoughtworks.paranamer.CachingParanamer CachingParanamer paranamer com.thoughtworks.paranamer.Paranamer\n" +
-                    "com.thoughtworks.paranamer.CachingParanamer lookupParameterNames classLoader,className,methodName java.lang.ClassLoader,java.lang.String,java.lang.String\n" +
-                    "com.thoughtworks.paranamer.CachingParanamer checkedLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
-                    "com.thoughtworks.paranamer.CachingParanamer lookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
-                    "com.thoughtworks.paranamer.CachingParanamer uncheckedLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
-                    "com.thoughtworks.paranamer.CheckedParanamer CheckedParanamer\n" +
-                    "com.thoughtworks.paranamer.CheckedParanamer CheckedParanamer delegate com.thoughtworks.paranamer.Paranamer\n" +
-                    "com.thoughtworks.paranamer.CheckedParanamer checkedLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
-                    "com.thoughtworks.paranamer.ParanamerException ParanamerException message java.lang.String\n" +
-                    "com.thoughtworks.paranamer.ParanamerGeneration generate sourcePath java.lang.String\n" +
-                    "com.thoughtworks.paranamer.ParanamerGeneration write outputPath,parameterText java.lang.String,java.lang.String\n" +
-                    "com.thoughtworks.paranamer.ParanamerImpl lookupParameterNames classLoader,className,methodName java.lang.ClassLoader,java.lang.String,java.lang.String\n" +
-                    "com.thoughtworks.paranamer.ParanamerImpl lookup classLoader,c,m,p java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
-                    "com.thoughtworks.paranamer.ParanamerImpl lookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
-                    "com.thoughtworks.paranamer.ParanamerRuntimeException ParanamerRuntimeException message java.lang.String\n" +
-                    "com.thoughtworks.paranamer.ParanamerTask execute\n" +
-                    "com.thoughtworks.paranamer.ParanamerTask setOutputPath outputPath java.lang.String\n" +
-                    "com.thoughtworks.paranamer.ParanamerTask setSourcePath sourcePath java.lang.String\n" +
-                    "com.thoughtworks.paranamer.UncheckedParanamer UncheckedParanamer\n" +
-                    "com.thoughtworks.paranamer.UncheckedParanamer UncheckedParanamer delegate com.thoughtworks.paranamer.Paranamer\n" +
-                    "com.thoughtworks.paranamer.UncheckedParanamer uncheckedLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n";
-    String expected1 = "com.thoughtworks.paranamer.Paranamer lookup clazz,classMethodAndParamNames java.lang.Class,java.lang.String\n";
+        "com.thoughtworks.paranamer.CachingParanamer CachingParanamer\n" +
+                "com.thoughtworks.paranamer.CachingParanamer CachingParanamer paranamer com.thoughtworks.paranamer.Paranamer\n" +
+                "com.thoughtworks.paranamer.CachingParanamer lookupParameterNames classLoader,className,methodName java.lang.ClassLoader,java.lang.String,java.lang.String\n" +
+                "com.thoughtworks.paranamer.CachingParanamer checkedLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
+                "com.thoughtworks.paranamer.CachingParanamer lookupMethod classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
+                "com.thoughtworks.paranamer.CachingParanamer uncheckedLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
+                "com.thoughtworks.paranamer.CheckedParanamer CheckedParanamer\n" +
+                "com.thoughtworks.paranamer.CheckedParanamer CheckedParanamer delegate com.thoughtworks.paranamer.Paranamer\n" +
+                "com.thoughtworks.paranamer.CheckedParanamer checkedMethodLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
+                "com.thoughtworks.paranamer.ParanamerException ParanamerException message java.lang.String\n" +
+                "com.thoughtworks.paranamer.ParanamerGeneration generate sourcePath java.lang.String\n" +
+                "com.thoughtworks.paranamer.ParanamerGeneration write outputPath,parameterText java.lang.String,java.lang.String\n" +
+                "com.thoughtworks.paranamer.ParanamerImpl lookupParameterNames classLoader,className,methodName java.lang.ClassLoader,java.lang.String,java.lang.String\n" +
+                "com.thoughtworks.paranamer.ParanamerImpl lookupConstructor classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String\n" +
+                "com.thoughtworks.paranamer.ParanamerImpl lookupMethod classLoader,c,m,p java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
+                "com.thoughtworks.paranamer.ParanamerImpl lookupMethod classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
+                "com.thoughtworks.paranamer.ParanamerRuntimeException ParanamerRuntimeException message java.lang.String\n" +
+                "com.thoughtworks.paranamer.ParanamerTask execute\n" +
+                "com.thoughtworks.paranamer.ParanamerTask setOutputPath outputPath java.lang.String\n" +
+                "com.thoughtworks.paranamer.ParanamerTask setSourcePath sourcePath java.lang.String\n" +
+                "com.thoughtworks.paranamer.UncheckedParanamer UncheckedParanamer\n" +
+                "com.thoughtworks.paranamer.UncheckedParanamer UncheckedParanamer delegate com.thoughtworks.paranamer.Paranamer\n" +
+                "com.thoughtworks.paranamer.UncheckedParanamer uncheckedMethodLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n";
+    String expected1 = "com.thoughtworks.paranamer.Paranamer lookupMethod clazz,classMethodAndParamNames java.lang.Class,java.lang.String\n";
 
     private String parameterSignatures;
 

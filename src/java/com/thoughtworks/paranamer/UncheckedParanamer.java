@@ -15,7 +15,7 @@ public class UncheckedParanamer {
     }
 
 
-    public Method uncheckedLookup(ClassLoader classLoader, String className, String methodName, String paramNames) {
+    public Method uncheckedMethodLookup(ClassLoader classLoader, String className, String methodName, String paramNames) {
         Method method = delegate.lookupMethod(classLoader, className, methodName, paramNames);
         if (method == null) {
             throw new ParanamerRuntimeException("Paranamer could not find method signature");

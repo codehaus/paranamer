@@ -63,7 +63,7 @@ public class CachingParanamerTestCase extends TestCase {
         paranamerGeneration.write(new File(".").getAbsolutePath() + "/target/classes/", parameterSignatures);
 
         Paranamer cachingParanamer = new CachingParanamer();
-        Method m = cachingParanamer.lookupMethod(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerImpl", "lookup", "classLoader,className,methodName,paramNames");
+        Method m = cachingParanamer.lookupMethod(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerImpl", "lookupMethod", "classLoader,className,methodName,paramNames");
         assertNotNull(m);
     }
 

@@ -1,18 +1,19 @@
 package com.thoughtworks.paranamer;
 
-import java.lang.reflect.Method;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
-import java.io.IOException;
-import java.util.List;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ParanamerImpl implements Paranamer {
 
     /**
      * Lookup a method, and return null if its not there
-     *
+     * <p/>
      * Copy the body of the method to wherever you want to - it means you won't have to rely on
      * one more jar in your app.
      *
@@ -92,9 +93,40 @@ public class ParanamerImpl implements Paranamer {
         int ix = mappings.indexOf(classAndMethodName);
         List matches = new ArrayList();
         while (ix > 0) {
-            matches.add(mappings.substring(ix + classAndMethodName.length(), mappings.indexOf(" ", ix + classAndMethodName.length()+1)).trim());
-            ix = mappings.indexOf(classAndMethodName,ix+1);
+            matches.add(mappings.substring(ix + classAndMethodName.length(), mappings.indexOf(" ", ix + classAndMethodName.length() + 1)).trim());
+            ix = mappings.indexOf(classAndMethodName, ix + 1);
         }
         return (String[]) matches.toArray(new String[matches.size()]);
+    }
+
+    public Constructor lookupConstructor(ClassLoader classLoader, String className, String paramNames) {
+        String mappings = getMappingsFromResource(classLoader.getResourceAsStream("META-INF/ParameterNames.txt"));
+        String classAndMethodAndParamNames = "\n" + className + " " + className.substring(className.lastIndexOf(".") + 1) + " " + paramNames + " ";
+        int ix = mappings.indexOf(classAndMethodAndParamNames);
+        if (ix != -1) {
+            int start = ix + classAndMethodAndParamNames.length();
+            int end = mappings.indexOf("\n", start + 1);
+            String methodParamTypes = mappings.substring(start, end).trim();
+            Class loadedClazz;
+            try {
+                loadedClazz = classLoader.loadClass(className);
+            } catch (ClassNotFoundException e) {
+                return null; // or could throw a/the exception
+            }
+            Constructor constructors[] = loadedClazz.getConstructors();
+            for (int i = 0; i < constructors.length; i++) {
+                Constructor constructor = constructors[i];
+                Class[] parameters = constructor.getParameterTypes();
+                String paramTypes = "";
+                for (int k = 0; k < parameters.length; k++) {
+                    paramTypes = paramTypes + parameters[k].getName();
+                    paramTypes = paramTypes + ((k + 1 < parameters.length) ? "," : "");
+                }
+                if (paramTypes.equals(methodParamTypes)) {
+                    return constructor;
+                }
+            }
+        }
+        return null;
     }
 }
