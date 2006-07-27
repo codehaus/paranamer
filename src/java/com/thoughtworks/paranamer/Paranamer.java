@@ -1,6 +1,7 @@
 package com.thoughtworks.paranamer;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
 
 public interface Paranamer {
 
@@ -10,6 +11,14 @@ public interface Paranamer {
      *
      */
     public Method lookupMethod(ClassLoader classLoader, String className, String methodName, String paramNames);
+
+    /**
+     *
+     * Lookup a constructor, and return null if its not there
+     *
+     */
+    public Constructor lookupConstructor(ClassLoader classLoader, String className, String paramNames);
+
 
     /**
      *

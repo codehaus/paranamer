@@ -13,11 +13,13 @@ public class ParanamerTestCase extends TestCase {
         "com.thoughtworks.paranamer.CachingParanamer CachingParanamer\n" +
                 "com.thoughtworks.paranamer.CachingParanamer CachingParanamer paranamer com.thoughtworks.paranamer.Paranamer\n" +
                 "com.thoughtworks.paranamer.CachingParanamer lookupParameterNames classLoader,className,methodName java.lang.ClassLoader,java.lang.String,java.lang.String\n" +
+                "com.thoughtworks.paranamer.CachingParanamer lookupConstructor classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String\n" +
                 "com.thoughtworks.paranamer.CachingParanamer checkedLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
                 "com.thoughtworks.paranamer.CachingParanamer lookupMethod classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
                 "com.thoughtworks.paranamer.CachingParanamer uncheckedLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
                 "com.thoughtworks.paranamer.CheckedParanamer CheckedParanamer\n" +
                 "com.thoughtworks.paranamer.CheckedParanamer CheckedParanamer delegate com.thoughtworks.paranamer.Paranamer\n" +
+                "com.thoughtworks.paranamer.CheckedParanamer checkedConstructorLookup classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String\n" +
                 "com.thoughtworks.paranamer.CheckedParanamer checkedMethodLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
                 "com.thoughtworks.paranamer.ParanamerException ParanamerException message java.lang.String\n" +
                 "com.thoughtworks.paranamer.ParanamerGeneration generate sourcePath java.lang.String\n" +

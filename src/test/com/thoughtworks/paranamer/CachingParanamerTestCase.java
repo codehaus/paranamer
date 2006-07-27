@@ -3,12 +3,14 @@ package com.thoughtworks.paranamer;
 import junit.framework.TestCase;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
 import java.io.File;
 import java.io.IOException;
 
 public class CachingParanamerTestCase extends TestCase {
 
     Method method;
+    Constructor ctor;
     Paranamer paranamer;
     int count = 0;
 
@@ -20,6 +22,11 @@ public class CachingParanamerTestCase extends TestCase {
             public Method lookupMethod(ClassLoader classLoader, String className, String methodName, String paramNames) {
                 count++;
                 return method;
+            }
+
+            public Constructor lookupConstructor(ClassLoader classLoader, String className, String paramNames) {
+                count++;
+                return ctor;
             }
 
             public String[] lookupParameterNames(ClassLoader classLoader, String className, String methodName) {
