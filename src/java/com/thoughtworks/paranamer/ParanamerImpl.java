@@ -10,22 +10,6 @@ import java.util.ArrayList;
 
 public class ParanamerImpl implements Paranamer {
 
-    public Method checkedLookup(ClassLoader classLoader, String className, String methodName, String paramNames) throws ParanamerException {
-        Method method = lookup(classLoader, className, methodName, paramNames);
-        if (method == null) {
-            throw new ParanamerException("Paranamer could not find method signature");
-        }
-        return method;
-    }
-
-    public Method uncheckedLookup(ClassLoader classLoader, String className, String methodName, String paramNames) {
-        Method method = lookup(classLoader, className, methodName, paramNames);
-        if (method == null) {
-            throw new ParanamerRuntimeException("Paranamer could not find method signature");
-        }
-        return method;
-    }
-
     /**
      * Lookup a method, and return null if its not there
      *
@@ -34,7 +18,7 @@ public class ParanamerImpl implements Paranamer {
      *
      * @previousParamNames classLoader,c,m,p
      */
-    public Method lookup(ClassLoader classLoader, String className, String methodName, String paramNames) {
+    public Method lookupMethod(ClassLoader classLoader, String className, String methodName, String paramNames) {
         String mappings = getMappingsFromResource(classLoader.getResourceAsStream("META-INF/ParameterNames.txt"));
         String classAndMethodAndParamNames = "\n" + className + " " + methodName + " " + paramNames + " ";
         int ix = mappings.indexOf(classAndMethodAndParamNames);
@@ -95,7 +79,7 @@ public class ParanamerImpl implements Paranamer {
         try {
             return lineReader.readLine();
         } catch (IOException e) {
-            return null;
+            return null; // or throw an exception if you prefer
         }
     }
 

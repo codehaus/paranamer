@@ -19,7 +19,7 @@ public class CachingParanamer implements Paranamer {
     }
 
     public synchronized Method checkedLookup(ClassLoader classLoader, String className, String methodName, String paramNames) throws ParanamerException {
-        Method m = lookup(classLoader, className, methodName, paramNames);
+        Method m = lookupMethod(classLoader, className, methodName, paramNames);
         if (m != null) {
             return m;
         } else {
@@ -28,7 +28,7 @@ public class CachingParanamer implements Paranamer {
     }
 
     public Method uncheckedLookup(ClassLoader classLoader, String className, String methodName, String paramNames) {
-        Method m = lookup(classLoader, className, methodName, paramNames);
+        Method m = lookupMethod(classLoader, className, methodName, paramNames);
         if (m != null) {
             return m;
         } else {
@@ -36,7 +36,7 @@ public class CachingParanamer implements Paranamer {
         }
     }
 
-    public Method lookup(ClassLoader classLoader, String className, String methodName, String paramNames) {
+    public Method lookupMethod(ClassLoader classLoader, String className, String methodName, String paramNames) {
         String key = className + " " + methodName + " " + paramNames;
         Map map = (Map) classLoaders.get(classLoader);
         Method method;
@@ -50,7 +50,7 @@ public class CachingParanamer implements Paranamer {
             map = new HashMap();
             classLoaders.put(classLoader, map);
         }
-        method = delegate.lookup(classLoader, className, methodName, paramNames);
+        method = delegate.lookupMethod(classLoader, className, methodName, paramNames);
         map.put(key,method);
         return method;
     }
