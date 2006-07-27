@@ -28,6 +28,8 @@ You may consider all of ParaNamer as public domain which is explained here (cour
   anyone for any purpose, commercial or non-commercial, and in any way, including by
   methods that have not yet been invented or conceived.
 
+See the full license at http://creativecommons.org/licenses/publicdomain/
+
 My own notes: Feel free to"
 
   * contribute code back to the project (or not).
