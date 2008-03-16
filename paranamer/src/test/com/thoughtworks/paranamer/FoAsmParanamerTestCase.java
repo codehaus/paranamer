@@ -33,8 +33,6 @@ package com.thoughtworks.paranamer;
 import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
 
-import com.thoughtworks.paranamer.BytecodeReadingParanamerTestCase.SpecificMethodSearchable;
-
 
 /**
  * 
@@ -101,13 +99,9 @@ public class FoAsmParanamerTestCase extends AbstractParanamerTestCase {
 
     public void testDoesNotRetrieveParameterNamedArg0() throws SecurityException, NoSuchMethodException {
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
-        try {
-        	asm.lookupParameterNames(SpecificMethodSearchable.class.getMethod(
+        String[] names = asm.lookupParameterNames(SpecificMethodSearchable.class.getMethod(
                 "unsupportedParameterNames", new Class[] { String.class }));
-        	fail("Should find (arg0) and think this is a debug-free compiled class.");
-        } catch(ParameterNamesNotFoundException ex) {
-        	// ok
-        }
+        assertNull(names);
     }
 
     public static class SpecificMethodSearchable {
