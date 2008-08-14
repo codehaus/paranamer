@@ -33,7 +33,6 @@ package com.thoughtworks.paranamer;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.AccessibleObject;
@@ -53,8 +52,6 @@ import java.util.List;
  */
 public class BytecodeReadingParanamer implements Paranamer {
 
-    private static final String[] EMPTY_NAMES = new String[]{};
-
     public String[] lookupParameterNames(AccessibleObject methodOrCtor) {
 
         Class[] types = null;
@@ -73,24 +70,18 @@ public class BytecodeReadingParanamer implements Paranamer {
         }
 
         InputStream content = getClassAsStream(declaringClass);
-        if (content == null) {
-            throw new ParameterNamesNotFoundException("Unable to get class bytes");
-        }
         try {
             ClassReader reader = new ClassReader(content);
             TypeCollector visitor = new TypeCollector(name, types);
             reader.accept(visitor);
             return visitor.getParameterNamesForMethod();
         } catch (IOException e) {
-            throw new ParameterNamesNotFoundException("IoException while reading class bytes", e);
+            return null;
         }
     }
 
     public int areParameterNamesAvailable(Class clazz, String constructorOrMethodName) {
         InputStream content = getClassAsStream(clazz.getClassLoader(), clazz.getName());
-        if (content == null) {
-            return NO_PARAMETER_NAMES_FOR_CLASS;
-        }
         try {
             ClassReader reader = new ClassReader(content);
             //TODO - also for constructors
@@ -109,22 +100,21 @@ public class BytecodeReadingParanamer implements Paranamer {
             }
             return Paranamer.PARAMETER_NAMES_FOUND;
         } catch (IOException e) {
-            return Paranamer.NO_PARAMETER_NAMES_FOR_CLASS;
+            return Paranamer.NO_PARAMETER_NAMES_LIST;
         } catch (ClassNotFoundException e) {
-            return NO_PARAMETER_NAMES_FOR_CLASS;
+            e.printStackTrace();
         }
+
+        return 0;
     }
 
     private InputStream getClassAsStream(Class clazz) {
         ClassLoader classLoader = clazz.getClassLoader();
-        if (classLoader == null) {
-            classLoader = ClassLoader.getSystemClassLoader();
-        }
         return getClassAsStream(classLoader, clazz.getName());
     }
 
     private InputStream getClassAsStream(ClassLoader classLoader, String className) {
-        String name = className.replace('.', '/') + ".class";  
+        String name = '/' + className.replace('.', '/') + ".class";
         // better pre-cache all methods otherwise this content will be loaded
         // multiple times
         InputStream asStream = classLoader.getResourceAsStream(name);
@@ -196,7 +186,7 @@ public class BytecodeReadingParanamer implements Paranamer {
                 return null;
             }
             for (int i = 0; i < argumentTypes.length; i++) {
-                if (!correctTypeName(argumentTypes, i).equals(
+                if (!argumentTypes[i].getClassName().equals(
                         this.parameterTypes[i].getName())) {
                     return null;
                 }
@@ -206,21 +196,12 @@ public class BytecodeReadingParanamer implements Paranamer {
             return collector;
         }
 
-        private String correctTypeName(Type[] argumentTypes, int i) {
-            String s = argumentTypes[i].getClassName();
-            // array notation needs cleanup.
-            if (s.endsWith("[]")) {
-                s = "[L" + s.substring(0, s.length() - 2) + ";";
-            }
-            return s;
-        }
-
         private String[] getParameterNamesForMethod() {
             if (collector == null) {
                 return null;
             }
             if (!collector.isDebugInfoPresent()) {
-                throw new ParameterNamesNotFoundException("Parameter names not found for " + methodName);
+            	throw new ParameterNamesNotFoundException("Parameter names not found for " + methodName);
             }
             return collector.getResult().split(COMMA);
         }
@@ -667,7 +648,7 @@ public class BytecodeReadingParanamer implements Paranamer {
                     if (varTypeTable != 0) {
                         k = readUnsignedShort(varTypeTable) * 3;
                         w = varTypeTable + 2;
-                        int[] typeTable = new int[k];
+                        int[] typeTable = new int[k];                        
                         while (k > 0) {
                             typeTable[--k] = w + 6; // signature
                             typeTable[--k] = readUnsignedShort(w + 8); // index
@@ -1003,7 +984,6 @@ public class BytecodeReadingParanamer implements Paranamer {
                     ++size;
                 }
             }
-
             Type[] args = new Type[size];
             off = 1;
             size = 0;

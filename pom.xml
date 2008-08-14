@@ -3,7 +3,7 @@
   <groupId>com.thoughtworks.paranamer</groupId>
   <artifactId>paranamer-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.1.6-SNAPSHOT</version>
+  <version>1.1.2</version>
   <name>ParaNamer Parent</name>
   <url>http://paranamer.codehaus.org</url>
 
@@ -197,9 +197,9 @@
     </plugins>
   </reporting>
   <scm>
-    <connection>scm:svn:svn://svn.codehaus.org/paranamer/trunk</connection>
-    <developerConnection>scm:svn:svn://svn.codehaus.org/paranamer/trunk</developerConnection>
-    <url>http://svn.paranamer.codehaus.org/trunk</url>
+    <connection>scm:svn:https://svn.codehaus.org/paranamer/tags/paranamer-parent-1.1.2</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/paranamer/tags/paranamer-parent-1.1.2</developerConnection>
+    <url>https://svn.codehaus.org/paranamer/tags/paranamer-parent-1.1.2</url>
   </scm>
 
   <licenses>
@@ -228,6 +228,41 @@
       <url>dav:https://dav.codehaus.org/paranamer/info/</url>
     </site>
   </distributionManagement>
+
+  <repositories>
+    <repository>
+      <id>codehaus-repository</id>
+      <name>Codehaus Repository</name>
+      <url>http://repository.codehaus.org</url>
+    </repository>
+    <repository>
+      <id>codehaus-snapshot-repository</id>
+      <name>Codehaus Snapshot Repository</name>
+      <url>http://snapshots.repository.codehaus.org</url>
+    </repository>
+    <repository>
+      <id>codehaus-legacy-repository</id>
+      <name>Codehaus Legacy Repository</name>
+      <url>http://dist.codehaus.org</url>
+      <layout>legacy</layout>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>codehaus-plugin-repository</id>
+      <name>Codehaus Plugin Repository</name>
+      <url>http://repository.codehaus.org</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>codehaus-plugin-snapshot-repository</id>
+      <name>Codehaus Plugin Snapshot Repository</name>
+      <url>http://snapshots.repository.codehaus.org</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
 
   <developers>
     <developer>

@@ -33,12 +33,14 @@ package com.thoughtworks.paranamer;
 import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
 
+import com.thoughtworks.paranamer.BytecodeReadingParanamerTestCase.SpecificMethodSearchable;
+
 
 /**
- *
+ * 
  * @author Guilherme Silveira
  */
-public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase {
+public class FoAsmParanamerTestCase extends AbstractParanamerTestCase {
 
     protected void setUp() throws Exception {
         paranamer = new BytecodeReadingParanamer();

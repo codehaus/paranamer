@@ -30,18 +30,18 @@
 
 package com.thoughtworks.paranamer;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.annotation.ElementType;
+
 /**
- * Exception thrown when no parameter names are found
- * 
  * @author Paul Hammant
- * @author Mauro Talevi
  */
-public class ParameterNamesNotFoundException extends RuntimeException {
 
-    static final String __PARANAMER_DATA = "v1.0 \n"
-      + "<init> java.lang.String message \n";
+//@Retention(RetentionPolicy.RUNTIME)
+//@Target(value={ElementType.METHOD, ElementType.FIELD, ElementType.CONSTRUCTOR, ElementType.PARAMETER})
+//public @interface GratuitousAnnotation {
+//}
 
-    public ParameterNamesNotFoundException(String message) {
-        super(message);
-    }
-}
+public interface GratuitousAnnotation {}
